@@ -1,18 +1,17 @@
 "use strict";
-const buscaProduto = async () => {
-    const response = await fetch("https://api.origamid.dev/json/notebook.json");
+const buscaCursos = async () => {
+    const response = await fetch("https://api.origamid.dev/json/cursos.json");
     const json = await response.json();
-    setData(json);
+    mostraCursos(json);
 };
-buscaProduto();
-const setData = (data) => {
-    document.body.innerHTML = `
-    <div>
-      <h2>${data.nome}</h2>
-      <p>${data.descricao}</p>
-      <br />
-      <span>Fabricante: ${data.empresaFabricante.nome}</span>
-      <span>Fabricante: ${data.empresaMontadora.nome}</span>
-    </div>
-  `;
+buscaCursos();
+const mostraCursos = (cursos) => {
+    const html = cursos.map((curso) => {
+        return `<h1 style="color: ${curso.nivel === "iniciante" ? "red" : "green"};">${curso.nome}</h1>
+    <p>Horas: ${curso.horas}</p>
+    <p>Tipo: ${curso.gratuito ? "gratuito" : "pago"}</p>
+    <p>Tags: ${curso.tags.join(", ")}</p>
+    `;
+    });
+    document.body.innerHTML = `${html}`;
 };
