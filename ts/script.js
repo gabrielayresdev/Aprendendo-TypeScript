@@ -1,38 +1,50 @@
 "use strict";
-// 1 - Faça um fetch da API: https://api.origamid.dev/json/cursos.json
-// 2 - Defina a interface da API
-// 3 - Crie um Type Guard, que garanta que a API possui nome, horas e tags
-// 4 - Use Type Guards para garantir a Type Safety do código
-// 5 - Preencha os dados da API na tela.
-async function getData() {
-    const response = await fetch("https://api.origamid.dev/json/cursos.json");
-    const json = await response.json();
-    handleData(json);
-}
-function isCurso(curso) {
-    if (curso &&
-        typeof curso === "object" &&
-        "nome" in curso &&
-        "horas" in curso &&
-        "aulas" in curso &&
-        "gratuito" in curso &&
-        "tags" in curso) {
+// 1 - Crie uma interface UserData para o formulário abaixo
+// 2 - Crie uma variável global UserData no window, ela será um objeto qualquer
+// 3 - Adicione um evento de keyup ao formulário
+// 4 - Quando o evento ocorrer adicione a {[id]: value} ao UserData
+// 5 - Salve UserData no localStorage
+// 6 - Crie uma User Type Guard, para verificar se o valor de localStorage é compatível com UserData
+// 7 - Ao refresh da página, preencha os valores de localStorage (caso seja UserData) no formulário e em window.UserData
+function isUserData(data) {
+    if (data &&
+        typeof data === "object" &&
+        ("nome" in data || "email" in data || "cpf" in data)) {
         return true;
     }
     return false;
 }
-function handleData(data) {
-    if (Array.isArray(data)) {
-        data.forEach((curso) => {
-            if (isCurso(curso)) {
-                document.body.innerHTML += `
-        <h1>${curso.nome}</h1>
-        <p>Horas: ${curso.horas}</p>
-        <p>${curso.aulas} aulas</p>
-        <p>${curso.gratuito ? "Gratuito" : "Pago"}</p>
-      `;
+function validJson(value) {
+    try {
+        JSON.parse(value);
+    }
+    catch (err) {
+        return false;
+    }
+    return true;
+}
+function handleKeyUp(event) {
+    const { target } = event;
+    if (target instanceof HTMLInputElement) {
+        window.UserData = {
+            ...window.UserData,
+            [target.id]: target.value,
+        };
+        localStorage.setItem("user", JSON.stringify(window.UserData));
+    }
+}
+const form = document.getElementById("form");
+form?.addEventListener("keyup", handleKeyUp);
+const newUser = localStorage.getItem("user");
+if (newUser && validJson(newUser)) {
+    const json = JSON.parse(newUser);
+    if (isUserData(json)) {
+        window.UserData = json;
+        Object.entries(json).forEach(([key, value]) => {
+            const elem = document.getElementById(key);
+            if (elem instanceof HTMLInputElement) {
+                elem.value = value;
             }
         });
     }
 }
-getData();
