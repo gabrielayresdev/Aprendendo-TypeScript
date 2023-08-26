@@ -14,9 +14,27 @@
     <!-- npx tailwindcss -i ./styles/css/styles.css -o ./styles/css/output.css --watch -->
   </head>
   <body>
-    <h1>TypeScript</h1>
-
-    <a id="origamid" href="http://www.origamid.com">Origamid</a>
+    <header id="header">
+      <a id="logo" href="">TypeScript</a>
+      <nav id="nav">
+        <button
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-haspopup="true"
+          aria-controls="menu"
+          id="btn-mobile"
+        >
+          Menu
+          <span id="hamburger"></span>
+        </button>
+        <ul id="menu" role="menu">
+          <li><a href="/">Sobre</a></li>
+          <li><a href="/">Produtos</a></li>
+          <li><a href="/">Portfólio</a></li>
+          <li><a href="/">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
 
     <script type="module" src="./ts/script.js"></script>
   </body>
