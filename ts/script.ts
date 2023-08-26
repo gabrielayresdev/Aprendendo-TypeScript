@@ -1,33 +1,13 @@
-// Estado dos elementos
-
-// menu inativo:
-// class="" em nav
-// aria-expanded="false" em button
-// aria-label="Abrir Menu" em button
-
-// menu ativo:
-// class="active" em nav
-// aria-expanded="true" em button
-// aria-label="Fechar Menu" em button
-
-const btn = document.querySelector("button");
-
-function handleClick(event: PointerEvent) {
-  const target = event.currentTarget;
-  const nav = document.getElementById("nav");
-  if (target instanceof HTMLElement) {
-    nav?.classList.toggle("active");
-    const active = nav?.classList.contains("active");
-    if (active) {
-      target.setAttribute("aria-expanded", "true");
-      target.setAttribute("aria-label", "Fechar Menu");
-    } else {
-      target.setAttribute("aria-expanded", "false");
-      target.setAttribute("aria-label", "Abrir Menu");
-    }
+function arredondaPraCima(num: number): number;
+function arredondaPraCima(num: string): string;
+function arredondaPraCima(num: number | string) {
+  let result: number | string;
+  result = Math.ceil(Number(num));
+  if (typeof num === "string") {
+    return "" + result;
   }
+  return result;
 }
 
-if (btn instanceof HTMLElement)
-  // querySelector retorna um Element, por isso, o evento de pointerdown não pode ser adicionado
-  btn?.addEventListener("pointerdown", handleClick);
+arredondaPraCima("234.5");
+arredondaPraCima(423.34);
